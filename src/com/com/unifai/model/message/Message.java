@@ -2,10 +2,28 @@ package com.unifai.model.message;
 
 import com.unifai.model.payload.Payload;
 
-public abstract class Message {
-    String body;
-    Payload payload;
-    MessageType type;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Message {
+    private String body;
+    private Map<String,Payload> payloads = new HashMap<>();
+
+    public Message(String body) {
+        this.body = body;
+    }
+
+    public Map<String, Payload> getPayloads() {
+        return payloads;
+    }
+
+    public void setPayloads(Map<String, Payload> payloads) {
+        this.payloads = payloads;
+    }
+
+    public void addPayload(String key, Payload value) {
+        payloads.put(key, value);
+    }
 
     public String getBody() {
         return body;
@@ -14,27 +32,4 @@ public abstract class Message {
     public void setBody(String body) {
         this.body = body;
     }
-
-    public Payload getPayload() {
-        return payload;
-    }
-
-    public void setPayload(Payload payload) {
-        this.payload = payload;
-    }
-
-    public MessageType getType() {
-        return type;
-    }
-
-    public void setType(MessageType type) {
-        this.type = type;
-    }
-
-    public Message(String body, MessageType type, Payload payload) {
-        this.body = body;
-        this.payload = payload;
-        this.type = type;
-    }
-
 }

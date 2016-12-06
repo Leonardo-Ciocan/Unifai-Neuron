@@ -1,8 +1,8 @@
 package com.unifai.example;
+import com.google.common.collect.ImmutableMap;
 import com.unifai.model.Neuron;
-import com.unifai.model.message.ImageMessage;
 import com.unifai.model.message.Message;
-import com.unifai.model.message.TextMessage;
+import com.unifai.model.payload.ImagePayload;
 
 public class EchoNeuron extends Neuron
 {
@@ -20,12 +20,10 @@ public class EchoNeuron extends Neuron
     }
 
     public Message respondToMessage(Message message) {
-        return new ImageMessage(
-                "Your message said:" + message.getBody(),
-                "Some caption",
-                "Some url",
-                "Some other url"
-        );
+        Message m = new Message("You said " + message);
+        m.addPayload("Image 1", new ImagePayload("http://img", "some caption" , "http://url"));
+        m.addPayload("Image 2", new ImagePayload("http://img2", "some caption2" , "http://url2"));
+        return m;
     }
 
 }

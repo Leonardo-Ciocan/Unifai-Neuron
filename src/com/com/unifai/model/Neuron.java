@@ -6,12 +6,17 @@ import com.google.gson.JsonObject;
 import com.unifai.model.message.Message;
 import com.unifai.model.message.MessageDeserializer;
 import com.unifai.model.message.MessageSerializer;
+import spark.Spark;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
 
 public abstract class Neuron {
+
+    private static final String UNIFAI_ENDPOINT = "/unifai";
+    private static final String INFO_ENDPOINT = "/info";
+    private static final String SEND_ENDPOINT = "/send";
 
     private Gson gson;
 
@@ -27,7 +32,7 @@ public abstract class Neuron {
     }
 
     public String getKeyword() {
-        throw new NotImplementedException();
+        return getName().toLowerCase();
     }
 
     public String getColor() {
@@ -43,11 +48,14 @@ public abstract class Neuron {
     }
 
     public void start() {
-        get("/unifai", (req,res) -> "0.1");
-        get("/info", (req, res) -> printInfo());
-        post("/send", (req, res) -> {
+        get(UNIFAI_ENDPOINT, (req,res) -> "0.1");
+        get(INFO_ENDPOINT, (req, res) -> printInfo());
+        post(SEND_ENDPOINT, (req, res) -> {
             Message response = respondToMessage(convertMessage(req.body()));
             return gson.toJson(response, Message.class);
+        });
+        Spark.exception(Exception.class, (exception, request, response) -> {
+            exception.printStackTrace();
         });
     }
 

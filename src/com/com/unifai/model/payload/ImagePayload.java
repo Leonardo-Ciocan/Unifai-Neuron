@@ -1,7 +1,11 @@
 package com.unifai.model.payload;
 
+import com.google.gson.JsonObject;
+
 public class ImagePayload extends Payload {
     String imageUrl;
+    String caption;
+    String redirectUrl;
 
     public String getImageUrl() {
         return imageUrl;
@@ -27,12 +31,20 @@ public class ImagePayload extends Payload {
         this.redirectUrl = redirectUrl;
     }
 
-    String caption;
-    String redirectUrl;
 
     public ImagePayload(String imageUrl, String caption, String redirectUrl) {
         this.imageUrl = imageUrl;
         this.caption = caption;
         this.redirectUrl = redirectUrl;
+    }
+
+    @Override
+    public JsonObject toJSON() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("caption", getCaption());
+        jsonObject.addProperty("imageUrl", getImageUrl());
+        jsonObject.addProperty("redirectUrl", getRedirectUrl());
+        jsonObject.addProperty("type", PayloadType.Image.toString());
+        return jsonObject;
     }
 }
